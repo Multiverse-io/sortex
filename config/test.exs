@@ -2,6 +2,8 @@ use Mix.Config
 config :sorter,
   ecto_repos: [Sorter.Repo]
 
+config :logger, level: :warning
+
 config :sorter, Sorter.Repo,
   username: "postgres",
   password: "postgres",

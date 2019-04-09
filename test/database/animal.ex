@@ -14,6 +14,5 @@ defmodule Sorter.SchemaBased.Animal do
     |> cast(attrs, [:number_of_legs])
     |> cast_assoc(:feed)
     |> cast_assoc(:accomodation)
-
   end
 end

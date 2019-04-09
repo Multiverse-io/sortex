@@ -1,196 +1,156 @@
 defmodule SorterTest do
   import Ecto.Query
-  use ExUnit.Case
+  use Sorter.DataCase, async: true
   alias Sorter.{Repo}
 
-  alias Sorter.SchemaBased.{Accomodation, Animal, Feed, Supplier}
+  alias Sorter.SchemaBased.Animal
   alias Sorter.AnimalFactory
 
   @query from(a in Animal)
 
-  describe "sort/2" do
-    test "does not sort if no params provided" do
-      assert @query == Sorter.sort(@query, %{})
-    end
+  test "does not sort if no params provided" do
+    assert @query == Sorter.sort(@query, %{})
+  end
 
-    test "allows default sort" do
-      query =
-        Sorter.sort(@query, %{}, %{
+  test "allows default sort" do
+    query =
+      Sorter.sort(@query, %{}, %{
+        "sort" => %{
+          "field" => "number_of_legs",
+          "direction" => "asc"
+        }
+      })
+
+    assert inspect(query) =~ "[asc: a0.number_of_legs]"
+  end
+
+  test "sorts according to parameters" do
+    query =
+      Sorter.sort(@query, %{
+        "sort" => %{
+          "field" => "number_of_legs",
+          "direction" => "asc"
+        }
+      })
+
+    assert inspect(query) =~ "[asc: a0.number_of_legs]"
+  end
+
+  test "sorts by an assoc field" do
+    query =
+      Sorter.sort(@query, %{
+        "sort" => %{
+          "assoc" => "feed",
+          "field" => "type",
+          "direction" => "desc"
+        }
+      })
+
+    assert inspect(query) =~ "[desc: f1.type]"
+  end
+
+  test "allows a reversed sort" do
+    query =
+      Sorter.sort(@query, %{
+        "sort" => %{
+          "field" => "number_of_legs",
+          "direction" => "desc",
+          "reverse" => "true"
+        }
+      })
+
+    assert inspect(query) =~ "[asc: a0.number_of_legs]"
+  end
+
+  test "allows a random sort" do
+    query = Sorter.sort(@query, %{"sort" => %{"field" => "random"}})
+    assert inspect(query) =~ "[asc: fragment(\"RANDOM()\")]"
+  end
+
+  describe "database tests" do
+    test "sort by associated field " do
+      AnimalFactory.insert(2, "typeb")
+      AnimalFactory.insert(4, "typea")
+
+      assert [%{feed: %{type: "typea"}}, %{feed: %{type: "typeb"}}] =
+        Animal
+        |> Sorter.sort(%{
           "sort" => %{
-            "field" => "job_title",
+            "field" => "type",
+            "assoc" => "feed",
             "direction" => "asc"
           }
         })
-
-      assert inspect(query) =~ "[asc: r0.job_title]"
+        |> Repo.all()
+        |> Repo.preload(:feed)
     end
 
-    test "sorts according to parameters" do
-      query =
-        Sorter.sort(@query, %{
-          "sort" => %{
-            "field" => "job_title",
-            "direction" => "asc"
-          }
-        })
+    test "sort by nested_association for schema based query " do
+      AnimalFactory.insert(2, "grass", 30, "supplierB")
+      AnimalFactory.insert(4, "grass", 30, "supplierA")
 
-      assert inspect(query) =~ "[asc: r0.job_title]"
-
-      query =
-        Sorter.sort(@query, %{
-          "sort" => %{
-            "field" => "salary",
-            "direction" => "desc"
-          }
-        })
-
-      assert inspect(query) =~ "[desc: r0.salary]"
-
-      query =
-        Sorter.sort(@query, %{
-          "sort" => %{
-            "assoc" => "company",
-            "field" => "name",
-            "direction" => "desc"
-          }
-        })
-
-      assert inspect(query) =~ "[desc: c1.name]"
+      assert [%{feed: %{supplier: %{name: "A"}}}, %{feed: %{supplier: %{name: "B"}}}]
+      Animal
+      |> Sorter.sort(%{
+        "sort" => %{
+          "field" => "name",
+          "assoc" => ["feed", "supplier"],
+          "direction" => "asc"
+        }
+      })
+      |> Repo.all()
+      |> Repo.preload(feed: :supplier)
     end
 
-    test "allows a reversed sort" do
-      query =
-        Sorter.sort(@query, %{
-          "sort" => %{
-            "field" => "job_title",
-            "direction" => "desc",
-            "reverse" => "true"
-          }
-        })
 
-      assert inspect(query) =~ "[asc: r0.job_title]"
-    end
+    @map_based_query_with_multiple_nested_joins from a in "animals",
+    join: f in "feed",
+    on: f.id == a.feed_id,
+    join: s in "suppliers",
+    on: f.supplier_id == s.id,
+    select: %{supplier_name: s.name}
 
-    test "allows a random sort" do
-      query = Sorter.sort(@query, %{"sort" => %{"field" => "random"}})
-      assert inspect(query) =~ "[asc: fragment(\"RANDOM()\")]"
-    end
-
-    test "sort by associated field database test" do
-
-      AnimalFactory.animal(%{number_of_legs: 4, feed: %{type: "typeb"}})
-      AnimalFactory.animal(%{number_of_legs: 4, feed: %{type: "typea"}})
-
-      assert [%{type: "typea"}, %{job_title: "typeb"}] =
-               Animal
-               |> Sorter.sort(%{
-                 "sort" => %{
-                   "field" => "type",
-                   "assoc" => "feed",
-                   "direction" => "desc"
-                 }
-               })
-               |> Repo.all()
-    end
-
-    test "sort by nested_association for schema based query database test" do
-      manager_a_id = ManagerFactory.new(%{user: %{email: "manager_a@whitehat.org.uk"}})
-      manager_b_id = ManagerFactory.new(%{user: %{email: "manager_b@whitehat.org.uk"}})
-      manager_c_id = ManagerFactory.new(%{user: %{email: "manager_c@whitehat.org.uk"}})
-
-      RoleFactory.insert_with_company(%{job_title: "jobc"}, %{
-        manager_id: manager_c_id,
-        name: "companya"
-      })
-
-      RoleFactory.insert_with_company(%{job_title: "joba"}, %{
-        manager_id: manager_a_id,
-        name: "companyb"
-      })
-
-      RoleFactory.insert_with_company(%{job_title: "jobb"}, %{
-        manager_id: manager_b_id,
-        name: "companyc"
-      })
-
-      assert [%{job_title: "joba"}, %{job_title: "jobb"}, %{job_title: "jobc"}] =
-               Role
-               |> Sorter.sort(%{
-                 "sort" => %{
-                   "field" => "email",
-                   "assoc" => ["company", "manager", "user"],
-                   "direction" => "asc"
-                 }
-               })
-               |> Repo.all()
-    end
-
-    @map_based_query_with_multiple_joins from r in "roles",
-                                           join: c in "companies",
-                                           on: r.company_id == c.id,
-                                           join: m in "managers",
-                                           on: m.id == c.manager_id,
-                                           join: u in "users",
-                                           on: u.id == m.user_id,
-                                           select: %{email: u.email}
-
-    test "sort by nested_association for map based query database test" do
-      manager_a_id = ManagerFactory.new(%{user: %{email: "manager_a@whitehat.org.uk"}})
-      manager_b_id = ManagerFactory.new(%{user: %{email: "manager_b@whitehat.org.uk"}})
-      manager_c_id = ManagerFactory.new(%{user: %{email: "manager_c@whitehat.org.uk"}})
-
-      RoleFactory.insert_with_company(%{job_title: "jobc"}, %{
-        manager_id: manager_c_id,
-        name: "companya"
-      })
-
-      RoleFactory.insert_with_company(%{job_title: "joba"}, %{
-        manager_id: manager_a_id,
-        name: "companyb"
-      })
-
-      RoleFactory.insert_with_company(%{job_title: "jobb"}, %{
-        manager_id: manager_b_id,
-        name: "companyc"
-      })
+    test "sort by nested_association for map based query " do
+      AnimalFactory.insert(4, "grass", 30, "B")
+      AnimalFactory.insert(4, "grass", 30, "A")
 
       assert [
-               %{email: "manager_a@whitehat.org.uk"},
-               %{email: "manager_b@whitehat.org.uk"},
-               %{email: "manager_c@whitehat.org.uk"}
-             ] =
-               @map_based_query_with_multiple_joins
-               |> Sorter.sort(%{
-                 "sort" => %{
-                   "field" => "email",
-                   "assoc" => "users",
-                   "direction" => "asc"
-                 }
-               })
-               |> Repo.all()
+        %{supplier_name: "A"},
+        %{supplier_name: "B"}
+      ] =
+        @map_based_query_with_multiple_nested_joins
+        |> Sorter.sort(%{
+          "sort" => %{
+            "field" => "name",
+            "assoc" => "suppliers",
+            "direction" => "asc"
+          }
+        })
+        |> Repo.all()
     end
 
-    @map_based_query_with_join from r in "roles",
-                                 join: c in "companies",
-                                 on: r.company_id == c.id,
-                                 left_join: m in "matches",
-                                 on: r.id == m.role_id,
-                                 select: %{id: r.id, job_title: r.job_title, company_name: c.name}
+    @map_based_query_with_sibling_joins from a in "animals",
+    join: f in "feed",
+    on: f.id == a.feed_id,
+    join: acc in "accomodation",
+    on: a.accomodation_id == acc.id,
+    select: %{accomodation_name: acc.name}
 
-    test "sort by associated field for query with multiple joins database test" do
-      RoleFactory.insert_with_company(%{job_title: "jobb"}, %{name: "companya"})
-      RoleFactory.insert_with_company(%{job_title: "joba"}, %{name: "companyb"})
 
-      assert [%{job_title: "joba"}, %{job_title: "jobb"}] =
-               @map_based_query_with_join
-               |> Sorter.sort(%{
-                 "sort" => %{
-                   "field" => "name",
-                   "assoc" => "companies",
-                   "direction" => "desc"
-                 }
-               })
-               |> Repo.all()
+    test "sort by associated field for query with existing joins " do
+      AnimalFactory.insert(4, "grass", 30, "supplier", "B")
+      AnimalFactory.insert(4, "grass", 30, "supplier", "A")
+
+      assert [%{accomodation_name: "A"}, %{accomodation_name: "B"}] =
+        @map_based_query_with_sibling_joins
+        |> Sorter.sort(%{
+          "sort" => %{
+            "field" => "name",
+            "assoc" => "accomodation",
+            "direction" => "asc"
+          }
+        })
+        |> Repo.all()
     end
   end
 end

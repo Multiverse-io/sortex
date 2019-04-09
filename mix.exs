@@ -24,16 +24,17 @@ defmodule Sorter.MixProject do
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
-      mod: mod(Mix.env()),
-      extra_applications: [:logger]
+      extra_applications: extra_applications(Mix.env)
     ]
   end
 
-  defp mod(:test) do
-    {Sorter.Application, []}
+  defp extra_applications(:test) do
+    [:postgrex, :ecto, :logger]
   end
 
-  defp mod(_), do: nil
+  defp extra_applications(_) do
+    [:logger]
+  end
 
   # Run "mix help deps" to learn about dependencies.
   defp deps do
