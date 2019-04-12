@@ -1,4 +1,4 @@
-# Sorter
+# Sortex
 
 Dynamically sort data in Elixir!
 
