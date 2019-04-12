@@ -34,7 +34,7 @@ For example, assuming you have an `Animals` schema with a `Feed` assoc and the `
 
 If you are using non schema based queries  e.g. `from a in "animals", select: %{a.number_of_feet}` simple sorts work in the same way. However assocs are slightly different. You just need to give the name of the table and the field
 e.g:
-```
+```elixir
 <%= sorted_column @conn, helper: :animal_path, action: :show, assoc: :supplier field: :name %></th>
 ```
 (If a table is joined multiple times in the query it will use the first join for it)
