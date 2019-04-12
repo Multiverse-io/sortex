@@ -8,6 +8,7 @@ defmodule Sortex.MixProject do
       elixir: "~> 1.8",
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
+      package: package(),
       deps: deps()
     ]
   end
@@ -15,13 +16,13 @@ defmodule Sortex.MixProject do
   defp elixirc_paths(:test),
     do: [
       "lib",
-      "test/database"
+      "test/database",
+      "test/route_helpers.ex"
     ]
 
   defp elixirc_paths(_), do: ["lib"]
 
 
-  # Run "mix help compile.app" to learn about applications.
   def application do
     [
       extra_applications: extra_applications(Mix.env)
@@ -36,16 +37,22 @@ defmodule Sortex.MixProject do
     [:logger]
   end
 
-  # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      # {:dep_from_hexpm, "~> 0.3.0"},
-      # p
-      #
-      #p
-      {:ecto_sql, "~> 3.0"},
-      {:postgrex, ">= 0.0.0"},
-      # {:dep_from_git, git: "https://github.com/elixir-lang/my_dep.git", tag: "0.1.0"}
+      {:ecto_sql, "~> 3.0", only: :test},
+      {:postgrex, ">= 0.0.0", only: :test},
+      {:ex_doc, ">= 0.0.0", only: :dev},
+      {:phoenix_html, "~> 2.13", only: :test}
+    ]
+  end
+
+  defp package do
+    [
+      files: ["lib", "mix.exs", "README*"],
+      maintainers: [""],
+      licenses: ["MIT"],
+      links: %{"GitHub" => "https://github.com/WhiteHatuk/sortex"},
+      description: "A magical way to add sorting dynamically to ecto queries"
     ]
   end
 end
