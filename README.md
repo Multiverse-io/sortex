@@ -1,6 +1,11 @@
 # Sorter
 
-**TODO: Add description**
+Dynamically sort data in Elixir!
+
+Sortex examines your ecto queries and adds the desired sorting adding any required joins dynamically
+
+It also provides View functions to use in Phoenix templates to ensure the parameters are correct for the backend
+
 
 ## Installation
 
