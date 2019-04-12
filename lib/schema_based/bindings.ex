@@ -1,5 +1,5 @@
-defmodule Sorter.SchemaBased.Bindings do
-  alias Sorter.SchemaBased.Struct
+defmodule Sortex.SchemaBased.Bindings do
+  alias Sortex.SchemaBased.Struct
 
   def all(%{joins: joins} = query) do
     {bindings, _} =

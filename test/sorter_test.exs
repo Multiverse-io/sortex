@@ -1,20 +1,20 @@
-defmodule SorterTest do
+defmodule SortexTest do
   import Ecto.Query
-  use Sorter.DataCase, async: true
-  alias Sorter.{Repo}
+  use Sortex.DataCase, async: true
+  alias Sortex.{Repo}
 
-  alias Sorter.SchemaBased.Animal
-  alias Sorter.AnimalFactory
+  alias Sortex.SchemaBased.Animal
+  alias Sortex.AnimalFactory
 
   @query from(a in Animal)
 
   test "does not sort if no params provided" do
-    assert @query == Sorter.sort(@query, %{})
+    assert @query == Sortex.sort(@query, %{})
   end
 
   test "allows default sort" do
     query =
-      Sorter.sort(@query, %{}, %{
+      Sortex.sort(@query, %{}, %{
         "sort" => %{
           "field" => "number_of_legs",
           "direction" => "asc"
@@ -26,7 +26,7 @@ defmodule SorterTest do
 
   test "sorts according to parameters" do
     query =
-      Sorter.sort(@query, %{
+      Sortex.sort(@query, %{
         "sort" => %{
           "field" => "number_of_legs",
           "direction" => "asc"
@@ -38,7 +38,7 @@ defmodule SorterTest do
 
   test "sorts by an assoc field" do
     query =
-      Sorter.sort(@query, %{
+      Sortex.sort(@query, %{
         "sort" => %{
           "assoc" => "feed",
           "field" => "type",
@@ -51,7 +51,7 @@ defmodule SorterTest do
 
   test "allows a reversed sort" do
     query =
-      Sorter.sort(@query, %{
+      Sortex.sort(@query, %{
         "sort" => %{
           "field" => "number_of_legs",
           "direction" => "desc",
@@ -63,7 +63,7 @@ defmodule SorterTest do
   end
 
   test "allows a random sort" do
-    query = Sorter.sort(@query, %{"sort" => %{"field" => "random"}})
+    query = Sortex.sort(@query, %{"sort" => %{"field" => "random"}})
     assert inspect(query) =~ "[asc: fragment(\"RANDOM()\")]"
   end
 
@@ -74,7 +74,7 @@ defmodule SorterTest do
 
       assert [%{feed: %{type: "typea"}}, %{feed: %{type: "typeb"}}] =
         Animal
-        |> Sorter.sort(%{
+        |> Sortex.sort(%{
           "sort" => %{
             "field" => "type",
             "assoc" => "feed",
@@ -91,7 +91,7 @@ defmodule SorterTest do
 
       assert [%{feed: %{supplier: %{name: "A"}}}, %{feed: %{supplier: %{name: "B"}}}]
       Animal
-      |> Sorter.sort(%{
+      |> Sortex.sort(%{
         "sort" => %{
           "field" => "name",
           "assoc" => ["feed", "supplier"],
@@ -119,7 +119,7 @@ defmodule SorterTest do
         %{supplier_name: "B"}
       ] =
         @map_based_query_with_multiple_nested_joins
-        |> Sorter.sort(%{
+        |> Sortex.sort(%{
           "sort" => %{
             "field" => "name",
             "assoc" => "suppliers",
@@ -143,7 +143,7 @@ defmodule SorterTest do
 
       assert [%{accomodation_name: "A"}, %{accomodation_name: "B"}] =
         @map_based_query_with_sibling_joins
-        |> Sorter.sort(%{
+        |> Sortex.sort(%{
           "sort" => %{
             "field" => "name",
             "assoc" => "accomodation",

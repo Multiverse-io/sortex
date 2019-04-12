@@ -10,11 +10,11 @@ use Mix.Config
 
 # You can configure your application as:
 #
-#     config :sorter, key: :value
+#     config :sortex, key: :value
 #
 # and access this configuration in your application as:
 #
-#     Application.get_env(:sorter, :key)
+#     Application.get_env(:sortex, :key)
 #
 # You can also configure a third-party app:
 #

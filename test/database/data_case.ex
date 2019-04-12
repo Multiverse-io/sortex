@@ -1,22 +1,21 @@
-defmodule Sorter.DataCase do
+defmodule Sortex.DataCase do
   use ExUnit.CaseTemplate
 
   alias Ecto.Adapters.SQL.Sandbox
-  alias Ecto.Changeset
 
   using do
     quote do
-      alias Sorter.Repo
+      alias Sortex.Repo
 
-      import Sorter.DataCase
+      import Sortex.DataCase
     end
   end
 
   setup tags do
-    :ok = Sandbox.checkout(Sorter.Repo)
+    :ok = Sandbox.checkout(Sortex.Repo)
 
     unless tags[:async] do
-      Sandbox.mode(Sorter.Repo, {:shared, self()})
+      Sandbox.mode(Sortex.Repo, {:shared, self()})
     end
 
     :ok

@@ -1,6 +1,6 @@
-defmodule Sorter.OrderTest do
+defmodule Sortex.OrderTest do
   use ExUnit.Case, async: true
-  alias Sorter.Order
+  alias Sortex.Order
   import Ecto.Query
 
   @query from(a in "animals")

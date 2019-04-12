@@ -1,4 +1,4 @@
-defmodule Sorter.SchemaBased.Supplier do
+defmodule Sortex.SchemaBased.Supplier do
   use Ecto.Schema
   import Ecto.Changeset
 

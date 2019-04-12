@@ -1,4 +1,4 @@
-defmodule Sorter.Repo.Migrations.CreateTables do
+defmodule Sortex.Repo.Migrations.CreateTables do
   use Ecto.Migration
 
   def change do

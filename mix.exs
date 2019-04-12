@@ -1,9 +1,9 @@
-defmodule Sorter.MixProject do
+defmodule Sortex.MixProject do
   use Mix.Project
 
   def project do
     [
-      app: :sorter,
+      app: :sortex,
       version: "0.1.0",
       elixir: "~> 1.8",
       elixirc_paths: elixirc_paths(Mix.env()),

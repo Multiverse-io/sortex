@@ -1,9 +1,9 @@
-defmodule Sorter.SchemaBasedTest do
+defmodule Sortex.SchemaBasedTest do
   use ExUnit.Case, async: true
   import Ecto.Query
 
-  alias Sorter.SchemaBased
-  alias Sorter.SchemaBased.{Accomodation, Animal, Feed, Supplier}
+  alias Sortex.SchemaBased
+  alias Sortex.SchemaBased.{Accomodation, Animal, Feed, Supplier}
 
   describe "sort" do
     test "can sort based on field on base schema" do

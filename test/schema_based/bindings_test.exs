@@ -1,7 +1,7 @@
-defmodule Sorter.BindingTest do
+defmodule Sortex.BindingTest do
   use ExUnit.Case, async: true
   import Ecto.Query
-  alias Sorter.SchemaBased.{Accomodation, Animal, Bindings, Feed, Supplier, Storage}
+  alias Sortex.SchemaBased.{Accomodation, Animal, Bindings, Feed, Supplier, Storage}
 
   test "no bindings" do
     assert [] == Bindings.all(Animal)

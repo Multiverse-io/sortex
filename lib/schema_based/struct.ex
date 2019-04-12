@@ -1,4 +1,4 @@
-defmodule Sorter.SchemaBased.Struct do
+defmodule Sortex.SchemaBased.Struct do
   def from_query(query) do
     case struct(query) do
       %Ecto.Query{from: %{source: {_, module}}} -> struct(module)

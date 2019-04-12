@@ -1,5 +1,5 @@
-defmodule Sorter.SchemaBased.RelationshipTree do
-  alias Sorter.SchemaBased.{Field, Struct}
+defmodule Sortex.SchemaBased.RelationshipTree do
+  alias Sortex.SchemaBased.{Field, Struct}
 
   def from_parameters!(query, sort_field, assocs) do
     base_struct = Struct.from_query(query)

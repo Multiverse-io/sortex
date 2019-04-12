@@ -1,7 +1,7 @@
-defmodule Sorter.SchemaBased do
+defmodule Sortex.SchemaBased do
   require Logger
-  alias Sorter.SchemaBased.{Bindings, Join, RelationshipTree, Struct}
-  alias Sorter.Order
+  alias Sortex.SchemaBased.{Bindings, Join, RelationshipTree, Struct}
+  alias Sortex.Order
 
   @base_table_binding_index 0
 

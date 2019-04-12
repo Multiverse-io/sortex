@@ -1,7 +1,7 @@
-defmodule Sorter do
+defmodule Sortex do
   import Ecto.Query, only: [order_by: 2]
-  alias Sorter.MapBased
-  alias Sorter.SchemaBased
+  alias Sortex.MapBased
+  alias Sortex.SchemaBased
 
   def sort(query, params, default_sort \\ %{})
 

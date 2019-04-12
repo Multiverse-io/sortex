@@ -1,7 +1,7 @@
-defmodule Sorter.StructTest do
+defmodule Sortex.StructTest do
   use ExUnit.Case, async: true
   import Ecto.Query
-  alias Sorter.SchemaBased.{Animal, Feed, Struct}
+  alias Sortex.SchemaBased.{Animal, Feed, Struct}
 
   describe "from_query/1" do
     test "struct based" do

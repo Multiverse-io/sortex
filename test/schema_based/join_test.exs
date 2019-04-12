@@ -1,9 +1,9 @@
-defmodule Sorter.SchemaBased.JoinTest do
+defmodule Sortex.SchemaBased.JoinTest do
   use ExUnit.Case, async: true
-  alias Sorter.SchemaBased.Join
+  alias Sortex.SchemaBased.Join
   import Ecto.Query
 
-  alias Sorter.SchemaBased.{Animal, Feed}
+  alias Sortex.SchemaBased.{Animal, Feed}
 
   @query from(a in Animal)
   test "creates join on base table" do

@@ -1,5 +1,5 @@
-defmodule Sorter.Repo do
+defmodule Sortex.Repo do
   use Ecto.Repo,
-    otp_app: :sorter,
+    otp_app: :sortex,
     adapter: Ecto.Adapters.Postgres
 end

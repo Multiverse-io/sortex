@@ -1,4 +1,4 @@
-defmodule Sorter.EctoAST do
+defmodule Sortex.EctoAST do
   @underscored_binding {:_, [], Elixir}
   @bound_binding {:p, [], Elixir}
 

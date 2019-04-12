@@ -1,6 +1,6 @@
-defmodule Sorter.SchemaBased.Join do
+defmodule Sortex.SchemaBased.Join do
   import Ecto.Query, only: :macros
-  alias Sorter.EctoAST
+  alias Sortex.EctoAST
 
   Enum.map(0..99, fn index ->
     bindings = EctoAST.bindings(index)

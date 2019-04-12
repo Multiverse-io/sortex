@@ -1,6 +1,6 @@
-defmodule Sorter.MapBasedFieldsTest do
+defmodule Sortex.MapBasedFieldsTest do
   use ExUnit.Case, async: true
-  alias Sorter.MapBased
+  alias Sortex.MapBased
   import Ecto.Query
 
   test "Can sort based on field on non joined table" do

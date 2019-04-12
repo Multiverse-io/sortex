@@ -1,6 +1,6 @@
-defmodule Sorter.Order do
+defmodule Sortex.Order do
   import Ecto.Query
-  alias Sorter.EctoAST
+  alias Sortex.EctoAST
 
   Enum.map(0..99, fn index ->
     bindings = EctoAST.bindings(index)

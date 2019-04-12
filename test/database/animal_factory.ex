@@ -1,6 +1,6 @@
-defmodule Sorter.AnimalFactory do
-  alias Sorter.SchemaBased.Animal
-  alias Sorter.Repo
+defmodule Sortex.AnimalFactory do
+  alias Sortex.SchemaBased.Animal
+  alias Sortex.Repo
 
   def insert(leg_count \\4, feed_type \\ "grass", storage_temperature \\ 30, supplier_name \\ "supplier1", accomodation_name \\ "barn") do
     attrs = %{

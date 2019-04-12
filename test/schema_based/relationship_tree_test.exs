@@ -1,8 +1,8 @@
-defmodule Sorter.SchemaBased.RelationshipTreeTest do
+defmodule Sortex.SchemaBased.RelationshipTreeTest do
   use ExUnit.Case, async: true
 
-  alias Sorter.SchemaBased.RelationshipTree
-  alias Sorter.SchemaBased.{Animal, Feed, Supplier}
+  alias Sortex.SchemaBased.RelationshipTree
+  alias Sortex.SchemaBased.{Animal, Feed, Supplier}
 
   describe "from_parameters!/3" do
     test "returns no_relationships if field is directly on base table" do

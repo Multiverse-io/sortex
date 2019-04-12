@@ -1,7 +1,7 @@
-defmodule Sorter.SchemaBased.Feed do
+defmodule Sortex.SchemaBased.Feed do
   use Ecto.Schema
   import Ecto.Changeset
-  alias Sorter.SchemaBased.{Supplier, Storage}
+  alias Sortex.SchemaBased.{Supplier, Storage}
 
   schema "feed" do
     field :type, :string

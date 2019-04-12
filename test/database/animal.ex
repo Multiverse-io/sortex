@@ -1,6 +1,6 @@
-defmodule Sorter.SchemaBased.Animal do
+defmodule Sortex.SchemaBased.Animal do
   use Ecto.Schema
-  alias Sorter.SchemaBased.{Accomodation, Feed}
+  alias Sortex.SchemaBased.{Accomodation, Feed}
   import Ecto.Changeset
 
   schema "animals" do

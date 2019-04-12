@@ -1,6 +1,6 @@
-defmodule Sorter.MapBased do
+defmodule Sortex.MapBased do
   import Ecto.Query
-  alias Sorter.Order
+  alias Sortex.Order
 
   def sort(query, field_name, direction, assocs) do
     field = field_to_atom!(field_name, query)

@@ -1,4 +1,4 @@
-defmodule Sorter.SchemaBased.Accomodation do
+defmodule Sortex.SchemaBased.Accomodation do
   use Ecto.Schema
   import Ecto.Changeset
 
