@@ -2,7 +2,7 @@
 
 Dynamically sort data in Elixir!
 
-Sortex examines your ecto queries and adds the desired sorting adding any required joins dynamically.
+Sortex examines your ecto queries and dynamically adds the desired sorting and any required joins.
 
 You can use it like this:
 ```elixir
