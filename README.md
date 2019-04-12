@@ -5,7 +5,7 @@ Dynamically sort data in Elixir!
 Sortex examines your ecto queries and adds the desired sorting adding any required joins dynamically.
 
 You can use it like this:
-```
+```elixir
   Animal
   |> Sorter.sort(%{"sort" => %{"number_of_feet" => 2}})
   |> Repo.all
@@ -13,7 +13,7 @@ You can use it like this:
 
 It also provides View functions to use in Phoenix templates to ensure the parameters are correct for the backend e.g
 
-```
+```html
 <table>
   <thead>
     <tr>
@@ -28,7 +28,7 @@ It also provides View functions to use in Phoenix templates to ensure the parame
 
 It supports assoc fields on schema based queries too, but you do need to tell it the links between schema as a schema could appear more than once in a tree of nested schemas...
 For example, assuming you have an `Animals` schema with a `Feed` assoc and the `Feed` assoc has a `Supplier` assoc and you wish to sort by the `name` field on the `Supplier` schema you would do this:
-```
+```elixir
 <%= sorted_column @conn, helper: :animal_path, action: :show, assoc: [:feed, :supplier] field: :name %></th>
 ```
 
