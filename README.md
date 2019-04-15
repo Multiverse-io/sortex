@@ -7,7 +7,7 @@ Sortex examines your ecto queries and dynamically adds the desired sorting and a
 You can use it like this:
 ```elixir
   Animal
-  |> Sorter.sort(%{"sort" => %{"field" => "number_of_feet"}})
+  |> Sortex.sort(%{"sort" => %{"field" => "number_of_feet"}})
   |> Repo.all
 ```
 
