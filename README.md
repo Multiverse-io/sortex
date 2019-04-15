@@ -7,7 +7,7 @@ Sortex examines your ecto queries and adds the desired sorting adding any requir
 You can use it like this:
 ```
   Animal
-  |> Sorter.sort(%{"sort" => %{"number_of_feet" => 2}})
+  |> Sorter.sort(%{"sort" => %{"field" => "number_of_feet"}})
   |> Repo.all
 ```
 
