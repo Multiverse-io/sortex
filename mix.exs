@@ -4,7 +4,7 @@ defmodule Sortex.MixProject do
   def project do
     [
       app: :sortex,
-      version: "0.1.0",
+      version: "0.1.1",
       elixir: "~> 1.8",
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
@@ -39,10 +39,10 @@ defmodule Sortex.MixProject do
 
   defp deps do
     [
-      {:ecto_sql, "~> 3.0", only: :test},
+      {:ecto_sql, "~> 3.0"},
       {:postgrex, ">= 0.0.0", only: :test},
       {:ex_doc, ">= 0.0.0", only: :dev},
-      {:phoenix_html, "~> 2.13", only: :test}
+      {:phoenix_html, "~> 2.13"}
     ]
   end
 
