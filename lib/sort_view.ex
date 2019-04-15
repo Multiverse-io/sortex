@@ -4,7 +4,7 @@ defmodule Sortex.SortView do
   def column_class, do: "sortex-clickable-column"
 
   def sorted_column(conn, opts) do
-    helper = opts[:helper]
+    helper_action = opts[:helper]
     action = opts[:action] || :index
     helpers_module = Application.get_env(:sortex, :route_helpers_module)
 
@@ -13,19 +13,19 @@ defmodule Sortex.SortView do
 
     url =
       case opts[:route_params] do
-        nil -> apply(helpers_module, helper, [conn, action, params])
-        route_params -> add_params(conn, helper, action, route_params, params)
+        nil -> apply(helpers_module, helper_action, [conn, action, params])
+        route_params -> add_params(helpers_module, conn, helper_action, action, route_params, params)
       end
 
     Phoenix.HTML.raw(~s(<a href="#{url}" class="#{column_class()}">#{title(opts, arrow)}</a>))
   end
 
-  defp add_params(conn, helper, action, route_params, params) when is_list(route_params) do
-    apply(Helpers, helper, [conn, action] ++ route_params ++ [params])
+  defp add_params(helpers_module, conn, helper_action, action, route_params, params) when is_list(route_params) do
+    apply(helpers_module, helper_action, [conn, action] ++ route_params ++ [params])
   end
 
-  defp add_params(conn, helper, action, route_params, params) do
-    apply(Helpers, helper, [conn, action, route_params, params])
+  defp add_params(helpers_module, conn, helper_action, action, route_params, params) do
+    apply(helpers_module, helper_action, [conn, action, route_params, params])
   end
 
   defp params(opts, query_params, direction) do
