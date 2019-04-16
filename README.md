@@ -4,6 +4,26 @@ Dynamically sort data in Elixir!
 
 Sortex examines your ecto queries and dynamically adds the desired sorting and any required joins.
 
+
+## Installation
+
+If [available in Hex](https://hex.pm/docs/publish), the package can be installed
+by adding `sortex` to your list of dependencies in `mix.exs`:
+
+```elixir
+def deps do
+  [
+    {:sortex, "~> 0.1.0"}
+  ]
+end
+```
+You need to configure the route helpers module in your config file as shown below
+```elixir
+config :sortex,
+  route_helpers_module: YourAppWeb.Router.Helpers
+```
+
+## Usage
 You can use it like this:
 ```elixir
   Animal
@@ -39,18 +59,6 @@ e.g:
 ```
 (If a table is joined multiple times in the query it will use the first join for it)
 
-## Installation
-
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `sortex` to your list of dependencies in `mix.exs`:
-
-```elixir
-def deps do
-  [
-    {:sortex, "~> 0.1.0"}
-  ]
-end
-```
 
 Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
 and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
