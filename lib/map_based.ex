@@ -38,6 +38,7 @@ defmodule Sortex.MapBased do
       query
       |> select_fields!()
       |> Keyword.values()
+      |> Enum.reject(fn x -> match?({:fragment, _, _}, x) end)
       |> Enum.map(fn {{_, _, [_, underlying_field_name]}, _, _} ->
         Atom.to_string(underlying_field_name)
       end)
