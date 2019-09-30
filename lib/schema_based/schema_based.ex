@@ -6,6 +6,7 @@ defmodule Sortex.SchemaBased do
   @base_table_binding_index 0
 
   def sort(query, sort_field, direction, assocs) do
+    sort_field = String.to_existing_atom(sort_field)
     case assocs do
       nil -> order_by(query, sort_field, direction, [])
       [_ | _] = assocs -> order_by(query, sort_field, direction, assocs)
@@ -14,12 +15,13 @@ defmodule Sortex.SchemaBased do
   end
 
   defp order_by(query, sort_field, direction, assocs) do
+    assocs = Enum.map(assocs, &String.to_existing_atom/1)
     relationship_tree = RelationshipTree.from_parameters!(query, sort_field, assocs)
 
     query = add_joins(query, relationship_tree)
     order_by_binding_index = order_by_binding_index(relationship_tree, query)
 
-    Order.by(query, order_by_binding_index, direction, String.to_atom(sort_field))
+    Order.by(query, order_by_binding_index, direction, sort_field)
   end
 
   defp add_joins(query, relationship_tree) do

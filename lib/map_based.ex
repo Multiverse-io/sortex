@@ -3,22 +3,12 @@ defmodule Sortex.MapBased do
   alias Sortex.Order
 
   def sort(query, field_name, direction, assocs) do
-    field = field_to_atom!(field_name, query)
-    field_source = field_source(query, field_name, assocs)
+    field = String.to_existing_atom(field_name)
+    field_source = field_source(query, field, assocs)
     do_sort(field_source, field, query, direction)
   end
 
-  defp field_source(query, field_name, _assocs = nil) do
-    case field_name in select_fields_as_strings(query) do
-      true ->
-        :from_base_table
-
-      false ->
-        raise ~s|field "#{field_name}" does not exist in select fields for query "#{
-                inspect(query)
-              }"|
-    end
-  end
+  defp field_source(_, _, _assocs = nil), do: :from_base_table
 
   defp field_source(query, _, related_table) do
     {:from_join, table_join_index(query, related_table)}
@@ -31,35 +21,6 @@ defmodule Sortex.MapBased do
       |> Enum.filter(fn {from_join, _} -> match?({^related_table, nil}, from_join.source) end)
 
     matching_join_index
-  end
-
-  defp field_to_atom!(field_name, query) do
-    fields =
-      query
-      |> select_fields!()
-      |> Keyword.values()
-      |> Enum.reject(fn x -> match?({:fragment, _, _}, x) end)
-      |> Enum.map(fn {{_, _, [_, underlying_field_name]}, _, _} ->
-        Atom.to_string(underlying_field_name)
-      end)
-
-    if field_name in fields do
-      String.to_atom(field_name)
-    else
-      raise ~s|No field on map or joined tables for field: #{field_name} in query: #{
-              inspect(query)
-            }|
-    end
-  end
-
-  defp select_fields!(%{select: %{expr: {_, _, fields}}}), do: fields
-  defp select_fields!(query), do: raise("No select clause found in query: #{inspect(query)}")
-
-  defp select_fields_as_strings(query) do
-    query
-    |> select_fields!()
-    |> Keyword.keys()
-    |> Enum.map(&Atom.to_string/1)
   end
 
   defp do_sort(:from_base_table, field, query, direction) do

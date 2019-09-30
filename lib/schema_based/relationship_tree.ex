@@ -10,7 +10,7 @@ defmodule Sortex.SchemaBased.RelationshipTree do
         [{:root, base_struct, :no_assoc_field}],
         fn assoc_field_name, [{_, parent, _} | _] = acc ->
           assoc_struct = associated_struct!(parent, assoc_field_name)
-          [{parent, assoc_struct, String.to_atom(assoc_field_name)} | acc]
+          [{parent, assoc_struct, assoc_field_name} | acc]
         end
       )
 
