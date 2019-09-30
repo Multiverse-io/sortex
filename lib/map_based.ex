@@ -8,17 +8,7 @@ defmodule Sortex.MapBased do
     do_sort(field_source, field, query, direction)
   end
 
-  defp field_source(query, field_name, _assocs = nil) do
-    case field_name in select_fields!(query) do
-      true ->
-        :from_base_table
-
-      false ->
-        raise ~s|field "#{field_name}" does not exist in select fields for query "#{
-                inspect(query)
-              }"|
-    end
-  end
+  defp field_source(_, _, _assocs = nil), do: :from_base_table
 
   defp field_source(query, _, related_table) do
     {:from_join, table_join_index(query, related_table)}
@@ -32,9 +22,6 @@ defmodule Sortex.MapBased do
 
     matching_join_index
   end
-
-  defp select_fields!(%{select: %{expr: {_, _, fields}}}), do: fields |> Keyword.keys()
-  defp select_fields!(query), do: raise("No select clause found in query: #{inspect(query)}")
 
   defp do_sort(:from_base_table, field, query, direction) do
     order_by(query, [x], [{^direction, ^field}])
