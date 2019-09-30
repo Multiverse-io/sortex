@@ -6,7 +6,7 @@ defmodule Sortex.SchemaBased.RelationshipTreeTest do
 
   describe "from_parameters!/3" do
     test "returns no_relationships if field is directly on base table" do
-      assert [] == RelationshipTree.from_parameters!(%Animal{}, "number_of_legs", [])
+      assert [] == RelationshipTree.from_parameters!(%Animal{}, :number_of_legs, [])
     end
 
     test "returns tree for valid parameters" do
@@ -14,9 +14,9 @@ defmodule Sortex.SchemaBased.RelationshipTreeTest do
                {Animal, Feed, :feed},
                {Feed, Supplier, :supplier}
              ] ==
-               RelationshipTree.from_parameters!(%Animal{}, "name", [
-                 "feed",
-                 "supplier"
+               RelationshipTree.from_parameters!(%Animal{}, :name, [
+                 :feed,
+                 :supplier
                ])
     end
 
@@ -32,7 +32,7 @@ defmodule Sortex.SchemaBased.RelationshipTreeTest do
     test "raises if field is not present on assoc" do
       error =
         assert_raise(RuntimeError, fn ->
-          RelationshipTree.from_parameters!(%Animal{}, "number_of_biscuits", ["feed"])
+          RelationshipTree.from_parameters!(%Animal{}, :number_of_biscuits, [:feed])
         end)
 
       assert ~s|associated field <number_of_biscuits> not found on schema <#{Feed}>| ==
@@ -41,7 +41,7 @@ defmodule Sortex.SchemaBased.RelationshipTreeTest do
 
     test "raises if given assoc is not present on struct" do
       assert_raise(RuntimeError, fn ->
-        RelationshipTree.from_parameters!(%Animal{}, "dont care", ["number_of_legs"])
+        RelationshipTree.from_parameters!(%Animal{}, :dont_care, [:number_of_legs])
       end)
     end
   end
