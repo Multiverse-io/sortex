@@ -1,4 +1,6 @@
 use Mix.Config
+IO.puts("HASDAS")
+
 config :sortex,
   ecto_repos: [Sortex.Repo]
 

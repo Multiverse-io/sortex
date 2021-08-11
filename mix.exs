@@ -22,10 +22,9 @@ defmodule Sortex.MixProject do
 
   defp elixirc_paths(_), do: ["lib"]
 
-
   def application do
     [
-      extra_applications: extra_applications(Mix.env)
+      extra_applications: extra_applications(Mix.env())
     ]
   end
 
@@ -39,10 +38,10 @@ defmodule Sortex.MixProject do
 
   defp deps do
     [
-      {:ecto_sql, "~> 3.0"},
+      {:ecto_sql, "~> 3.6"},
       {:postgrex, ">= 0.0.0", only: :test},
       {:ex_doc, ">= 0.0.0", only: :dev},
-      {:phoenix_html, "~> 2.13"}
+      {:phoenix_html, "~> 3.0"}
     ]
   end
 
