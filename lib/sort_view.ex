@@ -9,18 +9,23 @@ defmodule Sortex.SortView do
     helpers_module = Application.get_env(:sortex, :route_helpers_module)
 
     {direction, arrow} = direction(opts, conn.query_params["sort"])
+
     params = params(opts, conn.query_params, direction)
 
     url =
       case opts[:route_params] do
-        nil -> apply(helpers_module, helper_action, [conn, action, params])
-        route_params -> add_params(helpers_module, conn, helper_action, action, route_params, params)
+        nil ->
+          apply(helpers_module, helper_action, [conn, action, params])
+
+        route_params ->
+          add_params(helpers_module, conn, helper_action, action, route_params, params)
       end
 
     Phoenix.HTML.raw(~s(<a href="#{url}" class="#{column_class()}">#{title(opts, arrow)}</a>))
   end
 
-  defp add_params(helpers_module, conn, helper_action, action, route_params, params) when is_list(route_params) do
+  defp add_params(helpers_module, conn, helper_action, action, route_params, params)
+       when is_list(route_params) do
     apply(helpers_module, helper_action, [conn, action] ++ route_params ++ [params])
   end
 
@@ -45,16 +50,11 @@ defmodule Sortex.SortView do
   def direction(opts, %{
         "field" => field,
         "direction" => direction,
-        "assoc" => assoc
+        "assoc" => current_sort_assocs
       }) do
-    current_sort_assocs =
-      if is_list(assoc) do
-        Enum.map(assoc, &String.to_atom/1)
-      else
-        String.to_atom(assoc)
-      end
+    column_assocs = Enum.map(opts[:assoc], &to_string/1)
 
-    if(opts[:field] == String.to_atom(field) && opts[:assoc] == current_sort_assocs) do
+    if(Atom.to_string(opts[:field]) == field && column_assocs == current_sort_assocs) do
       opposite_direction(direction)
     else
       {direction, :not_sorted}
@@ -62,7 +62,7 @@ defmodule Sortex.SortView do
   end
 
   def direction(opts, %{"field" => field, "direction" => direction}) do
-    if(opts[:field] == String.to_atom(field)) do
+    if(Atom.to_string(opts[:field]) == field) do
       opposite_direction(direction)
     else
       {direction, :not_sorted}
@@ -73,6 +73,7 @@ defmodule Sortex.SortView do
 
   defp opposite_direction("asc"), do: {"desc", "▼"}
   defp opposite_direction("desc"), do: {"asc", "▲"}
+  defp opposite_direction(_), do: {"asc", :not_sorted}
 
   defp title(opts, :not_sorted), do: cased_title(opts)
 

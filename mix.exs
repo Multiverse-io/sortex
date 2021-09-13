@@ -41,7 +41,9 @@ defmodule Sortex.MixProject do
       {:ecto_sql, "~> 3.6"},
       {:postgrex, ">= 0.0.0", only: :test},
       {:ex_doc, ">= 0.0.0", only: :dev},
-      {:phoenix_html, "~> 3.0"}
+      {:plug, "~> 1.12", only: :test, runtime: false},
+      {:phoenix_html, "~> 3.0"},
+      {:floki, "~> 0.31.0", only: :test, runtime: false}
     ]
   end
 
