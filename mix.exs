@@ -9,7 +9,8 @@ defmodule Sortex.MixProject do
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
       package: package(),
-      deps: deps()
+      deps: deps(),
+      aliases: aliases()
     ]
   end
 
@@ -55,5 +56,9 @@ defmodule Sortex.MixProject do
       links: %{"GitHub" => "https://github.com/WhiteHatuk/sortex"},
       description: "A magical way to add sorting dynamically to ecto queries"
     ]
+  end
+
+  defp aliases do
+    [test: ["ecto.create", "ecto.migrate", "test"]]
   end
 end
