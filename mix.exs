@@ -40,11 +40,11 @@ defmodule Sortex.MixProject do
   defp deps do
     [
       {:ecto_sql, "~> 3.6"},
-      {:postgrex, ">= 0.0.0", only: :test},
-      {:ex_doc, ">= 0.0.0", only: :dev},
-      {:plug, "~> 1.12", only: :test, runtime: false},
       {:phoenix_html, "~> 3.0"},
-      {:floki, "~> 0.33.0", only: :test, runtime: false}
+      {:ex_doc, ">= 0.0.0", only: :dev},
+      {:floki, "~> 0.33.0", only: :test, runtime: false},
+      {:plug, "~> 1.12", only: :test, runtime: false},
+      {:postgrex, ">= 0.0.0", only: :test}
     ]
   end
 
