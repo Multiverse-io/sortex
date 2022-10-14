@@ -44,7 +44,7 @@ defmodule Sortex.MixProject do
       {:ex_doc, ">= 0.0.0", only: :dev},
       {:plug, "~> 1.12", only: :test, runtime: false},
       {:phoenix_html, "~> 3.0"},
-      {:floki, "~> 0.31.0", only: :test, runtime: false}
+      {:floki, "~> 0.33.0", only: :test, runtime: false}
     ]
   end
 
